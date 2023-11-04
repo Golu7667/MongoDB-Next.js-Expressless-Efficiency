@@ -3,10 +3,26 @@ import { useState } from "react"
 
 
 export default function Index() {
-  const [name, setName] = useState()
+  const [name, setName] = useState<string>('');
 
-const handleSubmit=()=>{
-  
+const handleSubmit=async()=>{
+  try {
+    const response = await fetch('/api/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    if (response.status === 201) {
+      console.log('Name saved successfully');
+    } else {
+      console.error('Failed to save name');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
 
 
