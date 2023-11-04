@@ -1,9 +1,10 @@
-import { Box, Button, Center, Img, Input, InputGroup, InputLeftAddon, Text, VStack, Divider, cookieStorageManager } from "@chakra-ui/react"
+import { Box, Button, Center, Img, Input, InputGroup, InputLeftAddon, Text, VStack, Divider, useToast } from "@chakra-ui/react"
 import { useState } from "react"
 
 
 export default function Index() {
   const [name, setName] = useState<string>('');
+  const toast=useToast()
 
 const handleSubmit=async()=>{
   try {
@@ -16,12 +17,30 @@ const handleSubmit=async()=>{
     });
 
     if (response.status === 201) {
-      console.log('Name saved successfully');
+      toast({
+        title: "Name saved successfully",
+        status: "success", 
+        duration: 3000, 
+        isClosable: true,  
+      });
+    
     } else {
-      console.error('Failed to save name');
+      toast({
+        title:"Failed to save name",
+        status:"error",
+        duration:3000,
+        isClosable:true
+      })
+     
     }
   } catch (error) {
-    console.error('Error:', error);
+    toast({
+      title:`${error}`,
+      status:"error",
+      duration:3000,
+      isClosable:true
+    })
+   
   }
 }
 
@@ -39,7 +58,7 @@ const handleSubmit=async()=>{
               <InputLeftAddon children='Name' />
               <Input type='text' value={name} placeholder='Enter Your Name' w={"300px"} onChange={(e)=>setName(e.target.value)} />
             </InputGroup>
-            <Button colorScheme='teal' variant='solid' mt="50px" w="200px" onClick={()=>handleSubmit}>
+            <Button colorScheme='teal' variant='solid' mt="50px" w="200px" onClick={()=>handleSubmit()}>
              Register
             </Button>
           </VStack>

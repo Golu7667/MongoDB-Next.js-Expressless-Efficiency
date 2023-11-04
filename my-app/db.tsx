@@ -15,15 +15,13 @@ interface NameModel extends Model<NameDocument> {}
 const Name = mongoose.model<NameDocument, NameModel>('Name', NameSchema);
 
 async function connectToDatabase() {
-  if (mongoose.connections[0]?.readyState) {
+  if (mongoose.connections[0]?.readyState === 1) {
     return;
   }
 
   try {
-    await mongoose.connect('YOUR_MONGODB_CONNECTION_STRING', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as any);
+    await mongoose.connect(`${process.env.NEXT_PUBLIC_DB}`);
+
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
